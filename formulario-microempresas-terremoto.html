@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reconstruyamos Juntos — Registro de necesidades</title>
+<style>
+  :root{
+    --tierra:#7A3B22;
+    --tierra-oscura:#4E2716;
+    --arena:#F6EFE3;
+    --arena-fuerte:#EADFC8;
+    --verde:#2F4B3C;
+    --verde-suave:#DCE7DD;
+    --tinta:#241F1C;
+    --tinta-suave:#5C554C;
+    --papel:#FBF8F2;
+    --linea:#D8CDB8;
+    --alerta:#A3402B;
+    --exito:#2F4B3C;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--papel);
+    color:var(--tinta);
+    font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;
+    line-height:1.5;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 20px 60px;}
+  header.hero{
+    background:var(--tierra);
+    color:var(--arena);
+    padding:38px 20px 32px;
+    margin-bottom:0;
+  }
+  header.hero .inner{max-width:640px;margin:0 auto;}
+  .eyebrow{
+    font-size:13px;
+    color:var(--arena-fuerte);
+    margin:0 0 10px;
+  }
+  h1{
+    font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;
+    font-weight:normal;
+    font-size:30px;
+    line-height:1.25;
+    margin:0 0 12px;
+    color:#fff;
+  }
+  .hero p{
+    font-size:15px;
+    max-width:46ch;
+    color:var(--arena-fuerte);
+    margin:0;
+  }
+  .status-band{
+    background:var(--verde-suave);
+    color:var(--verde);
+    font-size:13.5px;
+    padding:10px 20px;
+    text-align:center;
+    border-bottom:1px solid var(--linea);
+  }
+  .status-band.lleno{background:#F3E1DB;color:var(--alerta);}
+  main{padding-top:28px;}
+  section{margin-bottom:30px;}
+  h2{
+    font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;
+    font-weight:normal;
+    font-size:19px;
+    color:var(--tierra-oscura);
+    margin:0 0 4px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--linea);
+  }
+  .campo{margin-top:16px;}
+  label{
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:6px;
+    color:var(--tinta);
+  }
+  .ayuda{
+    font-size:12.5px;
+    color:var(--tinta-suave);
+    margin:2px 0 8px;
+  }
+  input[type=text], input[type=tel], input[type=number], select, textarea{
+    width:100%;
+    padding:10px 12px;
+    font-size:15px;
+    font-family:inherit;
+    color:var(--tinta);
+    background:#fff;
+    border:1px solid var(--linea);
+    border-radius:var(--radius);
+  }
+  input:focus, select:focus, textarea:focus{
+    outline:2px solid var(--tierra);
+    outline-offset:1px;
+    border-color:var(--tierra);
+  }
+  .objeto-fila{
+    display:grid;
+    grid-template-columns:1fr 140px auto;
+    gap:10px;
+    margin-top:10px;
+    align-items:start;
+  }
+  .objeto-fila input[type=number]{text-align:right;}
+  .quitar{
+    background:none;
+    border:1px solid var(--linea);
+    border-radius:var(--radius);
+    color:var(--alerta);
+    font-size:13px;
+    padding:0 12px;
+    height:41px;
+    cursor:pointer;
+  }
+  .quitar:hover{background:#F3E1DB;}
+  .agregar{
+    margin-top:12px;
+    background:none;
+    border:1px dashed var(--tierra);
+    color:var(--tierra-oscura);
+    border-radius:var(--radius);
+    padding:9px 14px;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .agregar:hover{background:var(--arena-fuerte);}
+  .total-linea{
+    display:flex;
+    justify-content:space-between;
+    margin-top:16px;
+    padding-top:12px;
+    border-top:1px solid var(--linea);
+    font-size:14.5px;
+  }
+  .total-linea strong{font-size:17px;}
+  .enviar{
+    width:100%;
+    background:var(--tierra);
+    color:#fff;
+    border:none;
+    border-radius:var(--radius);
+    padding:14px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:6px;
+  }
+  .enviar:hover{background:var(--tierra-oscura);}
+  .enviar:disabled{background:#B4A190;cursor:not-allowed;}
+  .error{color:var(--alerta);font-size:13px;margin-top:6px;display:none;}
+  .campo.con-error input, .campo.con-error select, .campo.con-error textarea{border-color:var(--alerta);}
+  .campo.con-error .error{display:block;}
+  .confirmacion, .cerrado{
+    text-align:center;
+    padding:60px 20px;
+  }
+  .confirmacion h2, .cerrado h2{border:none;padding:0;font-size:22px;}
+  .marca{
+    width:56px;height:56px;border-radius:50%;
+    background:var(--verde-suave);color:var(--verde);
+    display:flex;align-items:center;justify-content:center;
+    font-size:26px;margin:0 auto 18px;
+  }
+  .marca.cerrado-icono{background:#F3E1DB;color:var(--alerta);}
+  .oculto{display:none;}
+  .pie{
+    text-align:center;
+    font-size:12.5px;
+    color:var(--tinta-suave);
+    margin-top:36px;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="inner">
+    <p class="eyebrow">Ayuda para la reactivación económica</p>
+    <h1>Reconstruyamos juntos: cuéntanos qué necesita tu negocio</h1>
+    <p>Este formulario recoge lo que tu micro-empresa necesita para volver a funcionar después del terremoto. Solo podemos recibir 15 registros en esta ronda, así que te recomendamos enviarlo pronto.</p>
+  </div>
+</header>
+
+<div id="banda-estado" class="status-band">Cargando cupos disponibles…</div>
+
+<div class="wrap">
+
+<main id="vista-formulario">
+  <form id="formulario">
+
+    <section>
+      <h2>Datos de la empresa</h2>
+
+      <div class="campo" data-campo="nombreEmpresa">
+        <label for="nombreEmpresa">Nombre de la empresa o negocio</label>
+        <input type="text" id="nombreEmpresa" placeholder="Panadería San José">
+        <p class="error">Escribe el nombre de la empresa.</p>
+      </div>
+
+      <div class="campo" data-campo="tipoEmpresa">
+        <label for="tipoEmpresa">Tipo de empresa</label>
+        <select id="tipoEmpresa">
+          <option value="">Selecciona una opción</option>
+          <option>Comercio (tienda, venta al detal)</option>
+          <option>Alimentos y bebidas</option>
+          <option>Servicios</option>
+          <option>Manufactura o artesanías</option>
+          <option>Agropecuario</option>
+          <option>Otro</option>
+        </select>
+        <p class="error">Selecciona el tipo de empresa.</p>
+      </div>
+
+      <div class="campo" data-campo="municipio">
+        <label for="municipio">Municipio o ciudad</label>
+        <input type="text" id="municipio" placeholder="Popayán, Cauca">
+        <p class="error">Indica el municipio o ciudad.</p>
+      </div>
+
+      <div class="campo" data-campo="contacto">
+        <label for="contacto">Teléfono de contacto</label>
+        <p class="ayuda">Para avisarte si hay una donación disponible.</p>
+        <input type="tel" id="contacto" placeholder="300 123 4567">
+        <p class="error">Indica un teléfono de contacto.</p>
+      </div>
+
+      <div class="campo">
+        <label style="display:flex;align-items:center;gap:8px;">
+          <input type="checkbox" id="tienePunto" style="width:auto;">
+          Mi negocio cuenta con un punto físico (local, tienda, taller)
+        </label>
+      </div>
+
+      <div class="campo oculto" data-campo="direccion" id="campo-direccion">
+        <label for="direccion">Dirección del punto físico</label>
+        <input type="text" id="direccion" placeholder="Calle 5 # 12-34, barrio Centro">
+        <p class="error">Indica la dirección del punto físico.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>¿Qué necesitas para volver a operar?</h2>
+      <p class="ayuda">Agrega cada objeto o insumo por separado, con su costo estimado en pesos colombianos.</p>
+
+      <div id="lista-objetos"></div>
+      <button type="button" class="agregar" id="btn-agregar">+ Agregar otro objeto</button>
+
+      <div class="total-linea">
+        <span>Total estimado</span>
+        <strong id="total-costo">$0</strong>
+      </div>
+    </section>
+
+    <button type="submit" class="enviar" id="btn-enviar">Enviar registro</button>
+  </form>
+</main>
+
+<div id="vista-confirmacion" class="confirmacion oculto">
+  <div class="marca">✓</div>
+  <h2>Registro recibido</h2>
+  <p>Gracias por contarnos qué necesita tu negocio. Nos pondremos en contacto si hay apoyo disponible para ti.</p>
+</div>
+
+<div id="vista-cerrado" class="cerrado oculto">
+  <div class="marca cerrado-icono">✕</div>
+  <h2>Este formulario ya no recibe más registros</h2>
+  <p id="texto-cerrado">Se alcanzó el número de empresas que podemos registrar en esta ronda. Si tienes una necesidad urgente, comunícate directamente con el equipo de apoyo.</p>
+</div>
+
+<p class="pie">Registro de emprendedores afectados — reactivación económica</p>
+
+</div>
+
+<script>
+// URL de tu Google Apps Script publicado como aplicación web (ver instrucciones).
+const ENDPOINT = 'https://script.google.com/macros/s/AKfycbxHD5SC_7SyrpzpEk73y9FSsyJhWWgY3pbE8ijPdlarP26fF9O2i_B6wJ_V4-b7Qqfk9Q/exec';
+
+let contadorObjetos = 0;
+
+function nuevaFilaObjeto(prellenar){
+  contadorObjetos++;
+  const id = 'obj' + contadorObjetos;
+  const fila = document.createElement('div');
+  fila.className = 'objeto-fila';
+  fila.dataset.id = id;
+  fila.innerHTML =
+    '<input type="text" placeholder="Nevera, horno, mercancía..." class="obj-nombre">' +
+    '<input type="number" placeholder="Costo $" min="0" step="1000" class="obj-costo">' +
+    '<button type="button" class="quitar">Quitar</button>';
+  document.getElementById('lista-objetos').appendChild(fila);
+  fila.querySelector('.quitar').addEventListener('click', function(){
+    if(document.querySelectorAll('.objeto-fila').length > 1){
+      fila.remove();
+      calcularTotal();
+    }
+  });
+  fila.querySelector('.obj-costo').addEventListener('input', calcularTotal);
+}
+
+function calcularTotal(){
+  let total = 0;
+  document.querySelectorAll('.obj-costo').forEach(function(input){
+    const v = parseFloat(input.value);
+    if(!isNaN(v)) total += v;
+  });
+  document.getElementById('total-costo').textContent =
+    '$' + Math.round(total).toLocaleString('es-CO');
+}
+
+document.getElementById('btn-agregar').addEventListener('click', function(){
+  nuevaFilaObjeto();
+});
+
+document.getElementById('tienePunto').addEventListener('change', function(){
+  const campoDireccion = document.getElementById('campo-direccion');
+  if(this.checked){
+    campoDireccion.classList.remove('oculto');
+  } else {
+    campoDireccion.classList.add('oculto');
+    campoDireccion.classList.remove('con-error');
+    document.getElementById('direccion').value = '';
+  }
+});
+
+function marcarError(campoId, mostrar){
+  const campo = document.querySelector('[data-campo="' + campoId + '"]');
+  if(campo) campo.classList.toggle('con-error', mostrar);
+}
+
+function validar(){
+  let valido = true;
+  const nombre = document.getElementById('nombreEmpresa').value.trim();
+  const tipo = document.getElementById('tipoEmpresa').value;
+  const municipio = document.getElementById('municipio').value.trim();
+  const contacto = document.getElementById('contacto').value.trim();
+  const tienePunto = document.getElementById('tienePunto').checked;
+  const direccion = document.getElementById('direccion').value.trim();
+
+  marcarError('nombreEmpresa', !nombre);
+  marcarError('tipoEmpresa', !tipo);
+  marcarError('municipio', !municipio);
+  marcarError('contacto', !contacto);
+  if(!nombre || !tipo || !municipio || !contacto) valido = false;
+
+  if(tienePunto){
+    marcarError('direccion', !direccion);
+    if(!direccion) valido = false;
+  }
+
+  const filas = document.querySelectorAll('.objeto-fila');
+  let algunObjeto = false;
+  filas.forEach(function(fila){
+    const n = fila.querySelector('.obj-nombre').value.trim();
+    if(n) algunObjeto = true;
+  });
+  if(!algunObjeto) valido = false;
+
+  return valido;
+}
+
+async function consultarEstado(){
+  try{
+    const respuesta = await fetch(ENDPOINT + '?accion=estado');
+    const estado = await respuesta.json();
+    pintarEstado(estado);
+  }catch(err){
+    document.getElementById('banda-estado').textContent =
+      'No se pudo conectar con el sistema de cupos. Verifica que ENDPOINT esté configurado.';
+  }
+}
+
+function pintarEstado(estado){
+  const banda = document.getElementById('banda-estado');
+  const vistaForm = document.getElementById('vista-formulario');
+  const vistaCerrado = document.getElementById('vista-cerrado');
+
+  if(estado.cerrado){
+    document.getElementById('texto-cerrado').textContent =
+      'Se alcanzó el número de empresas que podemos registrar en esta ronda (' + estado.limiteEmpresas + '). Si tienes una necesidad urgente, comunícate directamente con el equipo de apoyo.';
+    banda.textContent = 'Registro cerrado por ahora.';
+    banda.classList.add('lleno');
+    vistaForm.classList.add('oculto');
+    vistaCerrado.classList.remove('oculto');
+  } else {
+    const cuposLibres = estado.limiteEmpresas - estado.empresasRegistradas;
+    banda.textContent = 'Cupos disponibles: ' + cuposLibres + ' de ' + estado.limiteEmpresas;
+    banda.classList.remove('lleno');
+    vistaForm.classList.remove('oculto');
+    vistaCerrado.classList.add('oculto');
+  }
+}
+
+document.getElementById('formulario').addEventListener('submit', async function(e){
+  e.preventDefault();
+  if(!validar()) return;
+
+  const btn = document.getElementById('btn-enviar');
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+
+  const objetos = [];
+  document.querySelectorAll('.objeto-fila').forEach(function(fila){
+    const nombre = fila.querySelector('.obj-nombre').value.trim();
+    const costo = parseFloat(fila.querySelector('.obj-costo').value) || 0;
+    if(nombre) objetos.push({ objeto: nombre, costo: costo });
+  });
+
+  const registro = {
+    nombreEmpresa: document.getElementById('nombreEmpresa').value.trim(),
+    tipoEmpresa: document.getElementById('tipoEmpresa').value,
+    municipio: document.getElementById('municipio').value.trim(),
+    contacto: document.getElementById('contacto').value.trim(),
+    tienePuntoFisico: document.getElementById('tienePunto').checked,
+    direccion: document.getElementById('direccion').value.trim(),
+    objetos: objetos,
+    fecha: new Date().toISOString()
+  };
+
+  try{
+    const respuesta = await fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(registro)
+    });
+    const resultado = await respuesta.json();
+
+    if(resultado.aceptado){
+      document.getElementById('vista-formulario').classList.add('oculto');
+      document.getElementById('vista-confirmacion').classList.remove('oculto');
+    } else {
+      pintarEstado(resultado.estado);
+      btn.disabled = false;
+      btn.textContent = 'Enviar registro';
+    }
+  }catch(err){
+    btn.disabled = false;
+    btn.textContent = 'Enviar registro';
+    alert('No se pudo enviar el registro. Revisa tu conexión e intenta de nuevo.');
+  }
+});
+
+nuevaFilaObjeto();
+consultarEstado();
+</script>
+
+</body>
+</html>
