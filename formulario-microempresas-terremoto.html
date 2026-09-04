@@ -186,7 +186,7 @@
   <div class="inner">
     <p class="eyebrow">Ayuda para la reactivación económica</p>
     <h1>Reconstruyamos juntos: cuéntanos qué necesita tu negocio</h1>
-    <p>Este formulario es para micro-empresas y emprendimientos afectados por el terremoto que necesitan apoyo para volver a operar. Ofrecemos un aporte máximo de <strong>$1.500.000 COP por emprendimiento</strong>, dirigido a la compra de los objetos o insumos necesarios para retomar la actividad. Solo podemos recibir 5 registros en esta ronda, así que te recomendamos enviarlo pronto.</p>
+    <p>Este formulario es para micro-empresas y emprendimientos afectados por el terremoto que necesitan apoyo para volver a operar. Ofrecemos un aporte máximo de <strong>$1.500.000 COP por emprendimiento</strong>, dirigido a la compra de los objetos o insumos necesarios para retomar la actividad.</p>
   </div>
 </header>
 
@@ -278,7 +278,7 @@
       <p class="ayuda">Agrega cada objeto o insumo por separado, con su costo estimado en pesos colombianos.</p>
 
       <div id="lista-objetos"></div>
-      <button type="button" class="agregar" id="btn-agregar">+ Agregar otro objeto</button>
+      <button type="button" class="agregar" id="btn-agregar">+ Agregar otro item</button>
 
       <div class="total-linea">
         <span>Total estimado</span>
@@ -319,7 +319,7 @@ function nuevaFilaObjeto(prellenar){
   fila.className = 'objeto-fila';
   fila.dataset.id = id;
   fila.innerHTML =
-    '<input type="text" placeholder="Nombre del objeto" class="obj-nombre">' +
+    '<input type="text" placeholder="Nombre del item" class="obj-nombre">' +
     '<input type="number" placeholder="Costo" min="0" step="1000" class="obj-costo">' +
     '<button type="button" class="quitar">Quitar</button>';
   document.getElementById('lista-objetos').appendChild(fila);
